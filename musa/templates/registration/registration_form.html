@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Register{% endblock %}
+
+
+{% block content %}
+
+<h2 class="slide-title col-md-12">REGISTER</h2>
+<form method="post" action=".">
+{% csrf_token %}
+<table class="col-md-6 col-md-offset-3">
+{% for field in form %}
+
+    <div class="fieldWrapper col-md-12">
+	<tr><td>{{ field.errors }}</td></tr>
+
+      <tr><td>{{ field.label_tag }}</td><td>{{ field }}</td></tr>
+    </div>
+
+{% endfor %}
+<tr><td><input class="button" type="submit" value="{% trans 'Submit' %}" /></td></tr>
+</table>
+</form>
+{% endblock %}
+
+
+

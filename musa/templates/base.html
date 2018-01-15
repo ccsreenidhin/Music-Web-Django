@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+		
+		<title>Signin/signup</title>
+		<!-- Loading third party fonts -->
+		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900" rel="stylesheet" type="text/css">
+		<link href="{% static 'fonts/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+		<!-- Loading main css file -->
+		<link rel="stylesheet" href="{% static 'style.css' %}">
+		
+		<!--[if lt IE 9]>
+		<script src="{% static 'js/ie-support/html5.js' %}"></script>
+		<script src="{% static 'js/ie-support/respond.js' %}"></script>
+		<![endif]-->
+
+	</head>
+
+	<body>
+		
+		<div id="site-content">
+			<header class="site-header">
+				<div class="container">
+					<a href="index.html" id="branding">
+						<img src="{% static 'dummy/logo.png' %}" alt="Site Title">
+						<small class="site-description">Music Everywhere</small>
+					</a> <!-- #branding -->
+					
+					<nav class="main-navigation">
+						<button type="button" class="toggle-menu"><i class="fa fa-bars"></i></button>
+						<ul class="menu">
+							<li class="menu-item"><a href="{% url 'home' %}">Home</a></li>
+							<li class="menu-item"><a href="{% url 'about' %}">About</a></li>
+							<li class="menu-item"><a href="{% url 'download' %}">Download</a></li>
+							<li class="menu-item"><a href="{% url 'contact' %}">Contact</a></li>
+							<li class="menu-item"><a href="{% url 'auth_login' %}" class="button">Signin/SignUp</a></li>
+						</ul> <!-- .menu -->
+					</nav> <!-- .main-navigation -->
+					<div class="mobile-menu"></div>
+				</div>
+			</header> <!-- .site-header -->
+			<div class="hero">
+				<div class="slider">
+					<ul class="slides">
+						<li class="lazy-bg" data-background="{% static 'dummy/slide-1.jpg' %}">
+							<div class="container">
+								{% block content %}
+
+								{% endblock %}
+
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+<footer class="site-footer">
+				<div class="container">
+					<img src="{% static 'dummy/logo-footer.png' %}" alt="Site Name">
+					
+					<address>
+						<p>495 Guitar Palace. Music Analyser, KL 11111 <br><a href="tel:000000000">(000) 000 000 000</a> <br> <a href="mailto:info@musicana.com">info@musicana.com</a></p> 
+					</address> 
+
+					<p class="copy">Copyright 2017 Music Analyser. All right reserved</p>
+				</div>
+			</footer> <!-- .site-footer -->
+
+		</div> <!-- #site-content -->
+
+		<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>	
+		<script src="http://maps.google.com/maps/api/js?sensor=false&amp;language=en"></script>	
+		<script src="{% static 'js/plugins.js' %}"></script>
+		<script src="{% static 'js/app.js' %}"></script>
+		
+	</body>
+
+</html>
