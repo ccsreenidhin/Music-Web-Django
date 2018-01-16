@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'musa',
-    'registration',
 ]
 
 MIDDLEWARE = [
@@ -130,10 +129,3 @@ PASSWORD_HASHERS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'musa/media')
-
-
-REGISTRATION_OPEN = True                # If True, users can register
-ACCOUNT_ACTIVATION_DAYS = 7     # One-week activation window; you may, of course, use a different value.
-REGISTRATION_AUTO_LOGIN = True  # If True, the user will be automatically logged in.
-LOGIN_REDIRECT_URL = '/welcome/'  # The page you want users to arrive at after they successful log in
-LOGIN_URL = '/accounts/login/'

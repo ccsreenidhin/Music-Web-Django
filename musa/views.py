@@ -1,29 +1,101 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render,  redirect
+from django.shortcuts import render
 
 # Create your views here.
 
-from musa.models import UserProfile, MusicCollection
+from .models import UserProfile
 
 from django.conf import settings
 
-from musa.forms import UserProfileForm, MusicForm
+from musa.forms import UserProfileForm, MusicForm, UserForm
 
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.contrib.auth import authenticate, login, logout
+
+from django.http import HttpResponseRedirect, HttpResponse
 
 from django.contrib.auth.decorators import login_required
+
+from musa.models import UserProfile, MusicCollection
 
 from django.contrib.auth.models import User
 
 from django.db.models import Q
 
-from django.views import View
+
 
 import os
 
+def register(request):
+    registered = False
 
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+
+        if user_form.is_valid() and profile_form.is_valid():
+
+            user = user_form.save()
+
+            user.set_password(user.password)
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user
+
+            if 'picture' in request.FILES:
+	    	 profile.picture = request.FILES['picture']
+
+            profile.save()
+
+            registered = True
+
+        else:
+            print user_form.errors, profile_form.errors
+
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+
+    return render(request, 'register.html', {'user_form': user_form, 'profile_form': profile_form, 'registered': registered} )
+
+
+
+def userlogin(request):
+
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+		args = {'user':user}
+                return render(request, 'welcome.html', args)
+        else:
+            return render(request, 'login.html', {})
+
+    else:
+        return render(request, 'login.html', {})
+
+
+
+
+def fileupload(request):
+    if request.method == 'POST':
+        form = MusicForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = MusicForm()
+    return render(request, 'welcome.html', {
+        'form': form
+    })
 
 def homepage(request):
     return render(request, 'index.html', context=None)
@@ -50,74 +122,24 @@ def downloadapp(request):
 
 @login_required
 def userpage(request):
-    if request.method == 'POST':
-        form = MusicForm(request.POST, request.FILES)
-        if form.is_valid():
-            music = form.save(commit=False)
-            music.user = request.user
-            music.save()
-            data = {'is_valid': True, 'name': music.document.name, 'url':music.document.url}
-        else:
-            data = {'is_valid': False}
-        return JsonResponse(data)
+    lim =[]
+    lip =[]
+    c_user = request.user
+    music = MusicCollection.objects.filter(Q(user = c_user))
+    for i in music:
+	lim.append(i)
+    pictures = UserProfile.objects.filter(Q(user = c_user))
+    for i in pictures:
+	lip.append(i)
+    return render_to_response(request, 'welcome.html',{'lim': lim, 'lip':lip})
 
-    elif request.method == 'GET':
-	pics = []
-        if request.user.is_authenticated():
-	    try:
-                pics = UserProfile.objects.get(user=request.user, user__is_active = True)
-            except:
-		pass
-	    try:
-                musics_list = MusicCollection.objects.filter(user=request.user, user__is_active = True)
-            except:
-		pass	
-        return render(request, 'welcome.html', {'pics':pics, 'musics':musics_list,})
-    return render(request, 'welcome.html', {})
+
+@login_required
+def userlogout(request):
+    logout(request)
+    return HttpResponseRedirect('/')
+
+@login_required
+def playlist(request):
+    return render(request, 'playlist.html', {'form': form})
     
-
-@login_required
-def clear_database(request):
-    for music in MusicCollection.objects.filter(user=request.user, user__is_active = True):
-        music.document.delete()
-        music.delete()
-    return redirect(request.POST.get('next'))
-    
-
-
-
-@login_required
-def profileview(request):
-    pics =[]
-    if request.user.is_authenticated():
-	try:
-           pics = UserProfile.objects.get(user=request.user, user__is_active = True)
-	except:
-	   pass
-    return render(request, 'profile.html', {'pics': pics})
-
-
-
-@login_required
-def profedit(request):
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = request.user
-            profile.save()
-            return HttpResponseRedirect('/profile/')
-    	return render(request, 'profile.html', {})
-    
-    elif request.method == 'GET':
-	form = UserProfileForm()
-        return render(request, 'profedit.html', {'form': form,})
-
-
-@login_required
-def musicdelete(request, pk):
-    for music in MusicCollection.objects.filter(user=request.user, user__is_active = True):
-	music.document.delete()
-        music.delete()
-    return HttpResponseRedirect('/welcome/')
-
