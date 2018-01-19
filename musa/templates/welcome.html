@@ -1,49 +1,43 @@
-{% extends 'inherit.html' %}
-{% load static %}
-
-{% block current %}
-							<li class="menu-item current-menu-item"><a href="{% url 'welcome' %}">Welcome</a></li>
-							<li class="menu-item"><a href="{% url 'playlist' %}">Playlist</a></li>
-							<li class="menu-item"><a href="{% url 'logout' %}" class="button">Logout</a></li>
-{% endblock %}	
+{% extends 'base.html' %}
 
 
+{% load staticfiles %} <!-- New line -->
 
-{% block content%}
+{% block jumbotron %}
 
+<style>
+{% block style %}
+.jumbotron {
+     background-color:  #d2b4de ;
+     color:  #fbfcfc ;
+}
+{% endblock %}
+</style>
+      
 
+ 
+ 
+	
 
-<h2 class="slide-title">Welcome   {{ user.username }}</h2>
-
-{% if lip %}
-        <ul>
-                               <li> <a href="{{ lip.picture.url }}">hi</a></li>
-                                <img src="{{ lip.picture.url }}"  href="{{ lip.picture.name }}"width="600" height="400">
-                       
-        </ul>
-	{% else %}
-        <p>No documents.</p>
-{% endif %}
- <a class="navbar-brand" href="/">Index</a>
-
-{% if lim %}
-
-        <ul>
-
-                                <li><a href="{{ lim.document.url }}"></a>{{ lim.document.name }}</li>
-                         {{ lim.saves }}
-        </ul>
-	{% else %}
-        <p>No documents.</p>
-{% endif %}
- <a class="navbar-brand" href="/">Index</a>
+{% endblock %}
 
 
- <!-- <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class ="button " type="submit">Upload Your Music Files</button>
-  </form>-->
 
-{% endblock %} %}
+{% block content %}
+           
+               <div>
 
+   
+      
+        <h1><a>{{ user }}</a></h1>
+        <h1><a>{{ posts.bio }}</a></h1>
+        <h1><a>{{ posts.location }}</a></h1>
+        
+        <img src="{{ posts.picture.url }}" />
+       
+        	
+    </div>
+            
+          
+
+{% endblock %}

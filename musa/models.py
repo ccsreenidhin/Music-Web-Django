@@ -14,6 +14,7 @@ def get_upload_path(instance, filename):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
+    bio = models.CharField(max_length=64, blank=True, null=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
 
     def __unicode__(self):
