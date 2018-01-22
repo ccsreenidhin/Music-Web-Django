@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render
 
 # Create your views here.
 
-from .models import UserProfile
-
 from django.conf import settings
 
-from musa.forms import UserProfileForm, MusicForm, UserForm
+from musa.forms import UserProfileForm, MusicForm
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -17,19 +15,65 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from django.contrib.auth.decorators import login_required
 
-from musa.models import UserProfile, MusicCollection
-
-from django.contrib.auth.models import User
-
-from django.db.models import Q
-
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import user_passes_test
-
-
-
 
 import os
+
+def register(request):
+    registered = False
+
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+
+        if user_form.is_valid() and profile_form.is_valid():
+
+            user = user_form.save()
+
+            user.set_password(user.password)
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user
+
+            if 'picture' in request.FILES:
+	    	 profile.picture = request.FILES['picture']
+
+            profile.save()
+
+            registered = True
+
+        else:
+            print user_form.errors, profile_form.errors
+
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+
+    return render(request,
+            'register.html',
+            {'user_form': user_form, 'profile_form': profile_form, 'registered': registered} )
+
+
+
+
+def userlogin(request):
+
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return render(request, 'welcome.html', {})
+        else:
+            return render(request, 'login.html', {})
+
+    else:
+        return render(request, 'login.html', {})
 
 
 
@@ -71,12 +115,13 @@ def downloadapp(request):
 
 @login_required
 def userpage(request):
-    posts = {}
-    if request.user.is_authenticated():
-       posts = UserProfile.objects.get(user=request.user, user__is_active = True)
-    return render(request, 'welcome.html', {'posts': posts})
+    return render(request, 'welcome.html', {})
 
 
+@login_required
+def userlogout(request):
+    logout(request)
+    return HttpResponseRedirect('/')
 
 @login_required
 def playlist(request):

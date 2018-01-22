@@ -1,43 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'inherit.html' %}
 
-
-{% load staticfiles %} <!-- New line -->
-
-{% block jumbotron %}
-
-<style>
-{% block style %}
-.jumbotron {
-     background-color:  #d2b4de ;
-     color:  #fbfcfc ;
-}
-{% endblock %}
-</style>
-      
-
- 
- 
-	
-
-{% endblock %}
+{% block current %}
+							<li class="menu-item current-menu-item"><a href="{% url 'welcome' %}">Welcome</a></li>
+							<li class="menu-item"><a href="{% url 'playlist' %}">Playlist</a></li>
+							<li class="menu-item"><a href="{% url 'logout' %}" class="button">Logout</a></li>
+{% endblock %}	
 
 
 
-{% block content %}
-           
-               <div>
+{% block content%}
 
-   
-      
-        <h1><a>{{ user }}</a></h1>
-        <h1><a>{{ posts.bio }}</a></h1>
-        <h1><a>{{ posts.location }}</a></h1>
-        
-        <img src="{{ posts.picture.url }}" />
-       
-        	
-    </div>
-            
-          
+<h2 class="slide-title">Welcome   {{ user.username }}</h2>
 
-{% endblock %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class ="button " type="submit">Upload Your Music Files</button>
+  </form>
+
+{% endblock %} %}
+
