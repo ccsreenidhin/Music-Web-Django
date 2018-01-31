@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from musa import views
 
 
@@ -8,17 +8,20 @@ from django.conf.urls.static import static
 
 
 
+
 urlpatterns = [
     url(r'^$', views.homepage, name ='home'),
     url(r'^about/$', views.aboutpage, name ='about'),
     url(r'^download/$', views.downloadpage, name ='download'),
     url(r'^contact/$', views.contactpage, name ='contact'),
-    url(r'^register/$', views.register, name='register'),
-    url(r'^login/$', views.userlogin, name='login'),
-    url(r'^logout/$', views.userlogout, name='logout'),
-    url(r'^welcome/$', views.userpage, name ='welcome'),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^download_app/musiana.tar.gz$',views.downloadapp,),
-    url(r'^playlist/$', views.playlist, name='playlist'),
+    url(r'^clear/$', views.clear_database, name='clear_database'),
+    url(r'^welcome/$', views.userpage, name ='welcome'),
+    url(r'^profile/$', views.profileview, name ='profile'),
+    url(r'^delete/(?P<pk>\d+)/$', views.musicdelete, name='mdelete'),
+    url(r'^profedit/$', views.profedit, name='pedit'),
+
 ]
 
 if settings.DEBUG:

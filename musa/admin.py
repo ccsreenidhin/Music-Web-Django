@@ -11,3 +11,5 @@ admin.site.register(UserProfile)
 admin.site.register(MusicCollection)
 
 # Register your models here.
+
+
