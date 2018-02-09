@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from musa import views
+from . import views
 
 
 from django.conf import settings
@@ -18,9 +18,9 @@ urlpatterns = [
     url(r'^download_app/musiana.tar.gz$',views.downloadapp,),
     url(r'^clear/$', views.clear_database, name='clear_database'),
     url(r'^welcome/$', views.userpage, name ='welcome'),
-    url(r'^profile/$', views.profileview, name ='profile'),
     url(r'^delete/(?P<pk>\d+)/$', views.musicdelete, name='mdelete'),
     url(r'^profedit/$', views.profedit, name='pedit'),
+    url(r'^thanks/$', views.thankspage, name='thx'),
 
 ]
 

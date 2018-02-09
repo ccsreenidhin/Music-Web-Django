@@ -1,52 +1,42 @@
-{% extends 'inherit.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block current %}
-							<li class="menu-item"><a href="{% url 'home' %}">Home</a></li>
-							<li class="menu-item"><a href="{% url 'about' %}">About</a></li>
-							<li class="menu-item"><a href="{% url 'download' %}">Download</a></li>
-							<li class="menu-item current-menu-item"><a href="{% url 'contact' %}">Contact</a></li>
-							<li class="menu-item"><a href="{% url 'auth_login' %}" class="button">Signin/SignUp</a></li>
+{% block navbar %}
+				{% include 'navbar.html' %}
 {% endblock %}	
 
-{% block contentmain %}			
-			<main class="main-content">
-				<div class="fullwidth-block inner-content">
-					<div class="container">
-						<h2 class="page-title">Contact Us</h2>
-						<div class="row">
-							<div class="col-md-6">
-								<form action="#" class="contact-form">
-									<input type="text" placeholder="Your name"..>
-									<input type="text" placeholder="Email Address..">
-									<input type="text" placeholder="Website...">
-									<textarea name="#" placeholder="Message..."></textarea>
-									<input type="submit" value="Send message">
-								</form>
-							</div>
-							<div class="col-md-6">
-								<div class="map-wrapper">
-									<div class="map"></div>
-									<address>
-										<div class="row">
-											<div class="col-sm-6">
-												<strong>Music Analyser.</strong>
-												<span>40 Guitar St, Kerala</span>
-											</div>
-											<div class="col-sm-6">
-											<a href="mailto:violin@musicana.com">rock@musicana.com</a> <br>
-												<a href="tel:00000000000">(000) 000 000 000</a>
-											</div>
-										</div>
-									</address>
-								</div>
-							</div>
-						</div>
+{% block main %}			
+			<section id="home">
+      <div class="container">
+				<h1 class="text-center pt-5">Get in Touch</h1>
+        <div class="row">
+    <div class="col-md-12">
+				<form method="POST" class="post-form" action=".">
+				{% csrf_token %}
+          <div class="row">
+					<div class="col-md-6">
+			  			<div class="form-group">
+			  				<label for="{{ form.name.id_for_label }}">Your name</label>
+					    	<input type="text" class="form-control" id="id_{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" placeholder=" Enter Name">
+				  		</div>
+				  		<div class="form-group">
+					    	<label for="{{ form.email.id_for_label }}">Email Address</label>
+					    	<input type="email" class="form-control" id="id_{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" placeholder=" Enter Email id">
+					  	</div>
+			  		</div>
+			  		<div class="col-md-6">
+			  			<div class="form-group">
+			  				<label for ="{{ form.content.id_for_label }}"> Message</label>
+			  			 	<textarea  class="form-control" id="id_{{ form.content.id_for_label }}" name="{{ form.content.html_name }}"placeholder="Enter Your Message"></textarea>
+			  			</div>
+			  			<div>
+			  				<button type="submit" class="btn btn-default submit"><i class="fa fa-paper-plane" aria-hidden="true"></i>  Send Message</button>
+			  			</div>
 					</div>
-				</div> <!-- .testimonial-section -->
-
-				
-			</main> <!-- .main-content -->
-
-			
+          </div>
+				</form>
+			</div>
+      </div>
+      </div>
+</section>
 {% endblock %}

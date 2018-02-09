@@ -1,28 +1,26 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% load i18n %}
-
-{% block title %}Login{% endblock %}
-
-{% block content %}
-
-
-  <h2 class="slide-title">LOGIN</h2>
-  <div class="col-md-12">
-<form method="post" action=".">
-  <table class ="col-md-6 col-md-offset-3">
-    {% csrf_token %}
-    <tr><td>{{ form.as_p }}</td></tr>
-    <tr><td><input class ="button cut-corner" type="submit" value="{% trans 'Log in' %}" /></td></tr>
-    <tr><td><input type="hidden" name="next" value="{{ next }}" /></td></tr>
-  </table>
-</form>
-
-<div class="col-md-6 col-md-offset-3">
-<p>{% trans "Forgot your password?" %} <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>.</p>
-<p>{% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.</p>
-</div>
-</div>
+{% block navbar %}
+    {% include 'navbar.html' %}
 {% endblock %}
 
+{% block main %}
+<section id="home">
+<div class="container">
+ <div class="row">
+   <div class="col-lg-12 text-center">
+     <h1 class="mt-5">CARRY YOUR MUSIC WITH YOU</h1>
+     <p class="lead">SignUp Today, Upload and enjoy playing your collections!!!</p>
+     <ul class="list-unstyled">
+       <li><button type="button" class="btn btn-lg orange" data-toggle="modal" data-target="#login-register-form">SignIn/SignUp</button></li>
+     </ul>
+   </div>
+ </div>
+</div>
+</section>
+{% endblock %}
 
+{% block script %}
+  <script src="{% static 'jquery/login.js' %}"></script>
+{% endblock %}

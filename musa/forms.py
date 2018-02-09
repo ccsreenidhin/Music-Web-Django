@@ -7,7 +7,7 @@ from musa.models import UserProfile, MusicCollection
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('fullname', 'phone', 'address', 'favourite_music', 'about', 'picture',)
+        fields = ('fullname', 'favourite_music', 'about', 'picture',)
 
 
 class MusicForm(forms.ModelForm):
@@ -15,4 +15,8 @@ class MusicForm(forms.ModelForm):
 	model = MusicCollection
 	fields = ('document',)
 
-
+class ContactForm(forms.Form):
+    name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+    content = forms.CharField(required=True,
+        widget=forms.Textarea)
